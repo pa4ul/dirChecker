@@ -7,7 +7,7 @@ echo "
 \__,_/_/_/   \____/_/ /_/\___/\___/_/|_|\___/_/ by pa4ul
                                                     
 "
-read -p "Enter the absolute path of you given directory: " path
+read -p "Enter the absolute path of you given directory: " path #implement REGEX VALIDATION!!!
 echo -e "\n"
 
 echo -e "Additinal options available"
