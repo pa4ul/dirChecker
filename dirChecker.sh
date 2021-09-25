@@ -7,7 +7,9 @@ outputRaw=($(ls -la $path | awk '{ print $1 "\t" $9}'))
 #echo ${outputRaw[*]} -> to display the whole array
 for ((i=1; i<=${#outputRaw[@]}; i+=2));
 do
-#if [[ $ ]]
-echo ${outputRaw[i]}
-
+if [[ ${outputRaw[i]:1:2} = "rw" ]]
+then
+#echo -e ${outputRaw[i]}"\t"${outputRaw[i+1]} -> lists all filenames INCLUSIVE their rights
+echo ${outputRaw[i+1]}
+fi
 done
