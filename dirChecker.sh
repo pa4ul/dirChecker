@@ -58,13 +58,17 @@ then
 
     read -p "Select your option: " opt
     echo -e "\n"
-
-    case $opt in
-    "1") listEverything ;;
-    "2") listFiles ;;
-    "3") listDirectorys ;;
-    esac
-    #echo -e "\nHere you can see files with write rights\n"
+    
+    if [[ $opt =~ ^[1-3]{1}$ ]]
+    then
+        case $opt in
+        "1") listEverything ;;
+        "2") listFiles ;;
+        "3") listDirectorys ;;
+        esac
+    else
+    echo -e "Option not available."
+    fi
 
 else
 echo -e "\n"
