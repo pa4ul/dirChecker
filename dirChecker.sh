@@ -8,58 +8,65 @@ echo "
                                                     
 "
 read -p "Enter the absolute path of you given directory: " path #implement REGEX VALIDATION!!!
+if [[ $path =~ ^\/[\W\w\d\D\s\S]* ]]
+then
+
+    echo -e "\n"
+
+    echo -e "Additinal options available"
+    echo -e "\t1) List everything"
+    echo -e "\t2) List only Files"
+    echo -e "\t3) List only Directorys"
+
+    function listEverything {
+        outputRaw=($(ls -la $path | awk '{ print $1 "\t" $9}'))
+        #echo ${outputRaw[*]} -> to display the whole array
+        for ((i=1; i<=${#outputRaw[@]}; i+=2));
+            do
+            if [[ ${outputRaw[i]:1:2} = "rw" ]]
+                then
+                #echo -e ${outputRaw[i]}"\t"${outputRaw[i+1]} -> lists all filenames INCLUSIVE their rights
+                echo ${outputRaw[i+1]}
+            fi
+        done
+    }
+
+    function listFiles {
+        outputRaw=($(ls -la $path | awk '{ print $1 "\t" $9}'))
+        #echo ${outputRaw[*]} -> to display the whole array
+        for ((i=1; i<=${#outputRaw[@]}; i+=2));
+            do
+            if [[ ${outputRaw[i]:0:3} = "-rw" ]]
+                then
+                echo ${outputRaw[i+1]}
+                #echo ${outputRaw[i]:0:3}
+            fi
+        done
+    }
+
+    function listDirectorys {
+        outputRaw=($(ls -la $path | awk '{ print $1 "\t" $9}'))
+        #echo ${outputRaw[*]} -> to display the whole array
+        for ((i=1; i<=${#outputRaw[@]}; i+=2));
+            do
+            if [[ ${outputRaw[i]:0:3} = "drw" ]]
+                then
+                echo ${outputRaw[i+1]}
+            fi
+        done
+    }
+
+    read -p "Select your option: " opt
+    echo -e "\n"
+
+    case $opt in
+    "1") listEverything ;;
+    "2") listFiles ;;
+    "3") listDirectorys ;;
+    esac
+    #echo -e "\nHere you can see files with write rights\n"
+
+else
 echo -e "\n"
-
-echo -e "Additinal options available"
-echo -e "\t1) List everything"
-echo -e "\t2) List only Files"
-echo -e "\t3) List only Directorys"
-
-function listEverything {
-    outputRaw=($(ls -la $path | awk '{ print $1 "\t" $9}'))
-    #echo ${outputRaw[*]} -> to display the whole array
-    for ((i=1; i<=${#outputRaw[@]}; i+=2));
-        do
-        if [[ ${outputRaw[i]:1:2} = "rw" ]]
-            then
-            #echo -e ${outputRaw[i]}"\t"${outputRaw[i+1]} -> lists all filenames INCLUSIVE their rights
-            echo ${outputRaw[i+1]}
-        fi
-    done
-}
-
-function listFiles {
-    outputRaw=($(ls -la $path | awk '{ print $1 "\t" $9}'))
-    #echo ${outputRaw[*]} -> to display the whole array
-    for ((i=1; i<=${#outputRaw[@]}; i+=2));
-        do
-        if [[ ${outputRaw[i]:0:3} = "-rw" ]]
-            then
-            echo ${outputRaw[i+1]}
-            #echo ${outputRaw[i]:0:3}
-        fi
-    done
-}
-
-function listDirectorys {
-    outputRaw=($(ls -la $path | awk '{ print $1 "\t" $9}'))
-    #echo ${outputRaw[*]} -> to display the whole array
-    for ((i=1; i<=${#outputRaw[@]}; i+=2));
-        do
-        if [[ ${outputRaw[i]:0:3} = "drw" ]]
-            then
-            echo ${outputRaw[i+1]}
-        fi
-    done
-}
-
-read -p "Select your option: " opt
-echo -e "\n"
-
-case $opt in
-"1") listEverything ;;
-"2") listFiles ;;
-"3") listDirectorys ;;
-esac
-#echo -e "\nHere you can see files with write rights\n"
-
+echo -e "The entered path does not match a valid format."
+fi
