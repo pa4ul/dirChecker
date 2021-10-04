@@ -29,3 +29,4 @@ respectively
 ```
 $ ./dirChecker.sh
 ```
+Further instructions are given during execution.
